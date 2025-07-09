@@ -1,0 +1,113 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  allAdmins: [IUserDto!]!
+  allSellers: [IUserDto!]!
+  allUsers: [IUserDto!]!
+  allProducts: [IProduct!]!
+  allCategories: [ICategory!]!
+  allOrders: [IOrderDto!]!
+}
+
+type IUserDto {
+  _id: ID!
+  userName: String!
+  email: String!
+  phone: String
+  isDeleted: Boolean
+  isConfirmed: Boolean
+  enableStep_2fa: Boolean
+  role: String!
+  provider: String!
+  profilePic: ImageDto
+  OTP: [IOtp!]!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type ImageDto {
+  secure_url: String!
+  public_id: String!
+  folderId: String
+}
+
+type IOtp {
+  code: String!
+  subject: String!
+  expiresIn: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type IProduct {
+  _id: ID!
+  title: String!
+  slug: String!
+  createdBy: IUserDto!
+  updatedBy: IUserDto!
+  category: ICategory
+  description: String
+  price: String
+  discount: String
+  discountType: String!
+  finalPrice: String!
+  stock: String!
+  images: [ImageInImagesDto!]
+  folderId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ICategory {
+  _id: ID!
+  name: String!
+  slug: String!
+  image: ImageDto
+  createdBy: IUserDto!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ImageInImagesDto {
+  secure_url: String!
+  public_id: String!
+}
+
+type IOrderDto {
+  _id: ID!
+  createdBy: IUserDto!
+  title: String!
+  address: String!
+  paymentMethod: String!
+  orderStatus: String!
+  productItems: [IProduct!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Mutation {
+  deleteCategory(deleteCategory: IdInput!): String!
+  deleteProduct(deleteProduct: IdInput!): String!
+  deleteUser(deleteUser: IdInput!): String!
+  updateUserRole(updateUserRole: UpdateUserRoleInput!): [IUserDto!]!
+  updateOrderStatus(updateOrderStatus: UpdateStatusOrderInput!): String!
+}
+
+input IdInput {
+  id: ID!
+}
+
+input UpdateUserRoleInput {
+  id: ID!
+  role: String!
+}
+
+input UpdateStatusOrderInput {
+  id: ID!
+  orderStatus: String!
+}
