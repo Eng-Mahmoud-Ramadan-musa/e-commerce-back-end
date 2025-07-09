@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Modules } from './Modules/modules.module';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -16,7 +16,13 @@ import { createKeyv } from '@keyv/redis';
       isGlobal: true, 
       envFilePath: '.env', 
     }),
-    MongooseModule.forRoot(process.env.DB_URL as string),
+    MongooseModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('DB_URL'),
+      }),
+      inject: [ConfigService],
+    }),
+
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/common/graphql/schema.gql'),
