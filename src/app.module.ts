@@ -8,6 +8,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -41,5 +42,6 @@ import { createKeyv } from '@keyv/redis';
     // }),
     Modules
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
